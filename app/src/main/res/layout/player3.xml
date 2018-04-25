@@ -151,14 +151,14 @@
 
             <!-- Menu Button -->
             <ImageButton
-                android:id="@+id/btnBackward"
+                android:id="@+id/btnMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:layout_marginRight="10dp"
                 android:scaleX="0.6"
                 android:scaleY="0.6"
-                android:src="@drawable/btn_menu" />
+                android:src="@drawable/btn_menu"/>
 
             <!-- Previous Button -->
             <ImageButton
@@ -190,7 +190,7 @@
 
             <!-- Plus Button -->
             <ImageButton
-                android:id="@+id/btnForward"
+                android:id="@+id/btnPlus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -245,7 +245,6 @@
             android:textColor="#04cbde"
             android:textStyle="bold"/>
     </LinearLayout>
-
 
 
     <!-- Repeat / Shuffle buttons -->
