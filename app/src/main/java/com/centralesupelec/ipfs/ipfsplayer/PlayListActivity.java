@@ -13,6 +13,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+
 public class PlayListActivity extends ListActivity {
     // Songs list
     public ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
@@ -20,7 +21,7 @@ public class PlayListActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.playlist);
+        setContentView(R.layout.playlists_main);
 
         ArrayList<HashMap<String, String>> songsListData = new ArrayList<HashMap<String, String>>();
 
