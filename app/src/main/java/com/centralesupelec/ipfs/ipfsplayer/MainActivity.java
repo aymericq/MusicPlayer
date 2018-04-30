@@ -1,23 +1,29 @@
 package com.centralesupelec.ipfs.ipfsplayer;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.widget.Button;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private ViewFlipper mViewFlipper;
     private byte currentView;
-
     private Button btnPlayer;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -43,11 +49,40 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+    ListView mainList;
+
+    final String[] listContent = {"Lorelei", "Fear of the Dark"};
+    final int[] resID = {R.raw.lorelei, R.raw.fearofthedark};
+    public static MediaPlayer mp;
+    public static String title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Initializing variables
+        mainList = (ListView) findViewById(R.id.songs);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listContent);
+        mainList.setAdapter(adapter);
+
+        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+/*                if (mp != null){
+                    mp.reset();
+                    mp.release();
+                }*/
+
+
+                mp = MediaPlayer.create(getApplicationContext(), resID[i]);
+                title = listContent[i];
+
+                Intent j = new Intent(getApplicationContext(), AndroidBuildingMusicPlayerActivity.class);
+                startActivityForResult(j, 100);
+
+            }
+        });
 
         mViewFlipper = (ViewFlipper) findViewById(R.id.view_flipper);
 
@@ -67,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void onNavBarClicked(View view) {
         String tag = (String) view.getTag();
@@ -93,4 +129,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mp.release();
+
+
+    }
+
 }

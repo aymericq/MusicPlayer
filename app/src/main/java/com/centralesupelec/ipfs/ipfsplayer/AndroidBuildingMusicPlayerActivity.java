@@ -15,7 +15,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 
 // import du MainActivity
 import android.os.Bundle;
@@ -26,31 +29,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
-
-    private TextView mTextMessage;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_decouvrir:
-                    mTextMessage.setText(R.string.title_decouvrir);
-                    return true;
-                case R.id.navigation_rechercher:
-                    mTextMessage.setText(R.string.title_rechercher);
-                    return true;
-                case R.id.navigation_playlists:
-                    mTextMessage.setText(R.string.title_playlists);
-                    return true;
-                case R.id.navigation_parametres:
-                    mTextMessage.setText(R.string.title_parametres);
-                    return true;
-            }
-            return false;
-        }
-    };
 
     private ImageButton btnPlay;
     private ImageButton btnNext;
@@ -64,8 +42,10 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
 
+
     // Media Player
     private MediaPlayer mp;
+
     // Handler to update UI timer, progress bar etc,.
     private Handler mHandler = new Handler();
     private SongsManager songsManager;
@@ -103,7 +83,7 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
 
         // Mediaplayer
 
-        mp = new MediaPlayer();
+        mp = MainActivity.mp;
         songsManager = new SongsManager();
         utils = new Utilities();
 
@@ -113,10 +93,7 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
 
         songsList = songsManager.getPlayList();
 
-
-
-
-
+        play();
 
         // Implémentation des boutons
 
@@ -243,6 +220,17 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
 
 
     // Fonction de lecture
+
+    public void play(){
+        mp.start();
+        btnPlay.setImageResource(R.drawable.btn_pause);
+        songProgressBar.setProgress(0);
+        songProgressBar.setMax(100);
+        updateProgressBar();
+        String songTitle = MainActivity.title;
+        songTitleLabel.setText(songTitle.toUpperCase());
+    }
+
 
     public void playSong(int songIndex){
         // Play song
