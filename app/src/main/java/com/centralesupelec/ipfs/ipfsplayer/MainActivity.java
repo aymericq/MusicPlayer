@@ -1,10 +1,6 @@
 package com.centralesupelec.ipfs.ipfsplayer;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,14 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.widget.Button;
-import android.media.MediaMetadataRetriever;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -36,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private byte currentView;
     private Button btnPlayer;
     private ArrayList<HashMap<String, String>> playlist;
-    private ImageButton btnTest;
-    public static byte[] cover;
-    MediaMetadataRetriever metaRetriever;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -67,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     ListView mainList;
 
     private String[] listContent;
-    //final int[] resID = {R.raw.lorelei, R.raw.fearofthedark};
     public static MediaPlayer mp;
     public static String title;
 
@@ -76,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Initializing variables
-
 
         SongsManager sm = new SongsManager();
         playlist = sm.getPlayList();
@@ -96,25 +84,14 @@ public class MainActivity extends AppCompatActivity {
                     mp.release();
                 }*/
 
-
                 mp = MediaPlayer.create(getApplicationContext(), Uri.parse(playlist.get(i).get("songPath")));
-
-                android.media.MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-                mmr.setDataSource(playlist.get(i).get("songPath"));
-                byte [] cover = mmr.getEmbeddedPicture();
-
                 title = listContent[i];
 
-                Intent in = new Intent(getApplicationContext(), AndroidBuildingMusicPlayerActivity.class);
-                startActivityForResult(in, 100);
-
-                int songIndex = 1;
-
-                in.putExtra("songIndex", songIndex);
-                setResult(100, in);
+                Intent playSongIntent = new Intent(getApplicationContext(), AndroidBuildingMusicPlayerActivity.class);
+                playSongIntent.putExtra("songIndex", i);
+                startActivityForResult(playSongIntent, 100);
 
             }
-
         });
 
         mViewFlipper = (ViewFlipper) findViewById(R.id.view_flipper);
@@ -134,29 +111,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(i, 100);
             }
         });
-
-
-        btnTest = (ImageButton) findViewById(R.id.btn_test);
-
-        btnTest.setOnClickListener(new AdapterView.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(getApplicationContext(), PlayListManagerActivity.class);
-                startActivityForResult(in, 100);
-
-            }
-
-        });
-
-
-
     }
 
 
     public void onNavBarClicked(View view) {
         String tag = (String) view.getTag();
 
-       switch(tag) {
+        switch(tag) {
             case "discover":
                 mViewFlipper.setDisplayedChild(0);
                 currentView = 0;
