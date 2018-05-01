@@ -30,10 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private Button btnPlayer;
     private ArrayList<HashMap<String, String>> playlist;
 
-    private String[] listContent;
-    public static MediaPlayer mp;
-    public static String title;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -59,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     ListView mainList;
+
+    private String[] listContent;
+    final int[] resID = {R.raw.lorelei, R.raw.fearofthedark};
+    public static MediaPlayer mp;
+    public static String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +89,8 @@ public class MainActivity extends AppCompatActivity {
                 mp = MediaPlayer.create(getApplicationContext(), Uri.parse(playlist.get(i).get("songPath")));
                 title = listContent[i];
 
-                Intent playSongIntent = new Intent(getApplicationContext(), AndroidBuildingMusicPlayerActivity.class);
-                playSongIntent.putExtra("songIndex", i);
-                startActivityForResult(playSongIntent, 100);
+                Intent j = new Intent(getApplicationContext(), AndroidBuildingMusicPlayerActivity.class);
+                startActivityForResult(j, 100);
 
             }
         });
@@ -145,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         mp.release();
+
+
     }
 
 }
