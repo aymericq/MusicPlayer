@@ -7,12 +7,16 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ListView;
@@ -28,6 +32,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+
 public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 
     private ImageButton btnPlay;
@@ -41,6 +46,7 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
     private TextView songTitleLabel;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
+    private ImageView coverart;
 
 
     // Media Player
@@ -80,6 +86,8 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
         songTitleLabel = (TextView) findViewById(R.id.songTitle);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
+
+        coverart = (ImageView) findViewById(R.id.cover);
 
         // Mediaplayer
 
@@ -228,7 +236,19 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
         songProgressBar.setMax(100);
         updateProgressBar();
         String songTitle = MainActivity.title;
-        songTitleLabel.setText(songTitle.toUpperCase());
+        songTitleLabel.setText(songTitle);
+
+        byte[] cover = MainActivity.cover;
+
+        if(cover != null)
+        {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(cover, 0, cover.length);
+            coverart.setImageBitmap(bitmap); //associated cover art in bitmap
+        }
+        else
+        {
+            coverart.setImageResource(R.drawable.adele); //any default cover resourse folder
+        }
     }
 
 
