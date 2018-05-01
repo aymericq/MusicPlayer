@@ -1,6 +1,7 @@
 package com.centralesupelec.ipfs.ipfsplayer;
 
 import android.content.Intent;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewFlipper mViewFlipper;
     private byte currentView;
     private Button btnPlayer;
+    private ImageButton btnTest;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -78,10 +81,16 @@ public class MainActivity extends AppCompatActivity {
                 mp = MediaPlayer.create(getApplicationContext(), resID[i]);
                 title = listContent[i];
 
-                Intent j = new Intent(getApplicationContext(), AndroidBuildingMusicPlayerActivity.class);
-                startActivityForResult(j, 100);
+                Intent in = new Intent(getApplicationContext(), AndroidBuildingMusicPlayerActivity.class);
+                startActivityForResult(in, 100);
+
+                int songIndex = 1;
+
+                in.putExtra("songIndex", songIndex);
+                setResult(100, in);
 
             }
+
         });
 
         mViewFlipper = (ViewFlipper) findViewById(R.id.view_flipper);
@@ -101,6 +110,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(i, 100);
             }
         });
+
+
+        btnTest = (ImageButton) findViewById(R.id.btn_test);
+
+        btnTest.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(getApplicationContext(), PlayListManagerActivity.class);
+                startActivityForResult(in, 100);
+
+            }
+
+        });
+
+
+
     }
 
 

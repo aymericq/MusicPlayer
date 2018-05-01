@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class SongsManager {
 
 
-    final String MEDIA_PATH = Environment.getExternalStorageDirectory().getPath() + "/";
+    final String MEDIA_PATH = "android.resource://com.centralesupelec.ipfs.ipfsplayer/raw";//Environment.getExternalStorageDirectory().getPath() + "/";
     private ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
     private String mp3Pattern = ".mp3";
     // Constructor
