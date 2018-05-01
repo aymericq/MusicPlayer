@@ -7,12 +7,18 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ListView;
@@ -41,6 +47,7 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
     private TextView songTitleLabel;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
+    private ImageView coverImage;
 
 
     // Media Player
@@ -56,6 +63,8 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
     private boolean isShuffle = false;
     private boolean isRepeat = false;
     private ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
+    private MediaMetadataRetriever metaRetriever;
+    private boolean mediaPlayerReady;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +90,10 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
 
+        coverImage = (ImageView) findViewById(R.id.cover);
+
+        mediaPlayerReady = false;
+
         // Mediaplayer
 
         mp = MainActivity.mp;
@@ -93,7 +106,13 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
 
         songsList = songsManager.getPlayList();
 
-        play();
+        metaRetriever = new MediaMetadataRetriever();
+
+        if(mp == null) {
+            mp = new MediaPlayer();
+        }
+
+        playSong(getIntent().getIntExtra("songIndex", 0));
 
         // Implémentation des boutons
 
@@ -218,20 +237,6 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
 
     }
 
-
-    // Fonction de lecture
-
-    public void play(){
-        mp.start();
-        btnPlay.setImageResource(R.drawable.btn_pause);
-        songProgressBar.setProgress(0);
-        songProgressBar.setMax(100);
-        updateProgressBar();
-        String songTitle = MainActivity.title;
-        songTitleLabel.setText(songTitle.toUpperCase());
-    }
-
-
     public void playSong(int songIndex){
         // Play song
         try {
@@ -239,6 +244,7 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
             mp.setDataSource(songsList.get(songIndex).get("songPath"));
             mp.prepare();
             mp.start();
+            mediaPlayerReady = true;
             // Displaying Song title
             String songTitle = songsList.get(songIndex).get("songTitle");
             songTitleLabel.setText(songTitle);
@@ -253,11 +259,34 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
             // Updating progress bar
             updateProgressBar();
         } catch (IllegalArgumentException e) {
+
             e.printStackTrace();
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        metaRetriever = new MediaMetadataRetriever();
+        metaRetriever.setDataSource(songsList.get(songIndex).get("songPath"));
+        try {
+            byte[] art = metaRetriever.getEmbeddedPicture();
+            Bitmap songImage = BitmapFactory
+                    .decodeByteArray(art, 0, art.length);
+            coverImage.setImageBitmap(songImage);
+            songTitleLabel.setText(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE));
+            /*album.setText(metaRetriver
+                    .extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM));
+            artist.setText(metaRetriver
+                    .extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST));
+            genre.setText(metaRetriver
+                    .extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE));*/
+        } catch (Exception e) {
+            coverImage.setBackgroundColor(Color.GRAY);
+            songTitleLabel.setText(songsList.get(songIndex).get("songTitle"));
+            /*album.setText("Unknown Album");
+            artist.setText("Unknown Artist");
+            genre.setText("Unknown Genre");*/
         }
     }
 
@@ -267,19 +296,20 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
 
     private Runnable mUpdateTimeTask = new Runnable() {
             public void run() {
-                long totalDuration = mp.getDuration();
-                long currentDuration = mp.getCurrentPosition();
+                if(mediaPlayerReady) {
+                    long totalDuration = mp.getDuration();
+                    long currentDuration = mp.getCurrentPosition();
 
-                // Displaying Total Duration time
-                songTotalDurationLabel.setText(""+utils.milliSecondsToTimer(totalDuration));
-                // Displaying time completed playing
-                songCurrentDurationLabel.setText(""+utils.milliSecondsToTimer(currentDuration));
+                    // Displaying Total Duration time
+                    songTotalDurationLabel.setText("" + utils.milliSecondsToTimer(totalDuration));
+                    // Displaying time completed playing
+                    songCurrentDurationLabel.setText("" + utils.milliSecondsToTimer(currentDuration));
 
-                // Updating progress bar
-                int progress = (int)(utils.getProgressPercentage(currentDuration, totalDuration));
-                //Log.d("Progress", ""+progress);
-                songProgressBar.setProgress(progress);
-
+                    // Updating progress bar
+                    int progress = (int) (utils.getProgressPercentage(currentDuration, totalDuration));
+                    //Log.d("Progress", ""+progress);
+                    songProgressBar.setProgress(progress);
+                }
                 // Running this thread after 100 milliseconds
                 mHandler.postDelayed(this, 100);
             }
@@ -343,6 +373,7 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
     public void onDestroy(){
         super.onDestroy();
         mp.release();
+        mediaPlayerReady = false;
     }
 }
 
