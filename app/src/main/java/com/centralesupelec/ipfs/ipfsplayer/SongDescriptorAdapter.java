@@ -11,22 +11,22 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ItemSongPlaylistAdapter extends BaseAdapter implements OnClickListener {
+public class SongDescriptorAdapter extends BaseAdapter implements OnClickListener {
+
     private Context context;
+    private List<SongDescriptor> songDescriptorList;
 
-    private List<SongDescriptor> listItemSongs;
-
-    public ItemSongPlaylistAdapter(Context context, List<SongDescriptor> listItemSongs) {
+    public SongDescriptorAdapter(Context context, List<SongDescriptor> songDescriptorList) {
         this.context = context;
-        this.listItemSongs = listItemSongs;
+        this.songDescriptorList = songDescriptorList;
     }
 
     public int getCount() {
-        return listItemSongs.size();
+        return songDescriptorList.size();
     }
 
     public Object getItem(int position) {
-        return listItemSongs.get(position);
+        return songDescriptorList.get(position);
     }
 
     public long getItemId(int position) {
@@ -34,7 +34,7 @@ public class ItemSongPlaylistAdapter extends BaseAdapter implements OnClickListe
     }
 
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        SongDescriptor entry = listItemSongs.get(position);
+        SongDescriptor entry = songDescriptorList.get(position);
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -70,14 +70,7 @@ public class ItemSongPlaylistAdapter extends BaseAdapter implements OnClickListe
     @Override
     public void onClick(View view) {
         SongDescriptor entry = (SongDescriptor) view.getTag();
-        listItemSongs.remove(entry);
+        songDescriptorList.remove(entry);
         notifyDataSetChanged();
-
     }
-
-    private void showDialog(SongDescriptor entry) {
-        // Create and show your dialog
-        // Depending on the Dialogs button clicks delete it or do nothing
-    }
-
 }

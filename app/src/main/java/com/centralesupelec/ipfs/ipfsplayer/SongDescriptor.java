@@ -1,21 +1,16 @@
 package com.centralesupelec.ipfs.ipfsplayer;
 
-public class ItemSongPlaylist {
+public class SongDescriptor {
     private String songname;
     private String artist;
     private String album;
 
-    // Constructor for the class
-    public ItemSongPlaylist (String songname, String artist, String album) {
-        super();
+    public SongDescriptor(String songname, String artist, String album) {
         this.songname = songname;
         this.artist = artist;
         this.album = album;
     }
 
-    // Getter and setter methods for all the fields.
-    // Though you would not be using the setters for this example,
-    // it might be useful later.
     public String getSongname() {
         return songname;
     }

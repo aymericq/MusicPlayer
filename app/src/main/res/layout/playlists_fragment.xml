@@ -80,10 +80,9 @@
         android:listSelector="@drawable/list_selector"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="60dp" />
-    <!--si meilleure solution que le double margin je prends...-->
 
     <EditText
-        android:id="@+id/editText_input"
+        android:id="@+id/playlistName_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -94,36 +93,5 @@
 
         <requestFocus />
     </EditText>
-
-
-    <!--HEADER-->
-
-
-<!--    <TextView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="@drawable/nav_item_color_state"
-        app:itemTextColor="@drawable/nav_item_color_state"
-        app:menu="@menu/navigation"
-        />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="261dp"
-        android:layout_height="189dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="168dp"
-        android:text="TextView" />-->
 
 </RelativeLayout>
