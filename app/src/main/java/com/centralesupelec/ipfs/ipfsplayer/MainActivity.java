@@ -38,54 +38,11 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private Fragment displayedFragment;
     private HashMap<String, Fragment> fragments;
-
-    private TextView mTextMessage;
-    private ViewFlipper mViewFlipper;
-    private byte currentView;
-    private Button btnPlayer;
     private ArrayList<HashMap<String, String>> playlist;
-
-    private EditText etInput;
-    private ImageButton btnAdd;
-    private ListView lvItem;
-    private ArrayList<String> itemArray;
-    private ArrayAdapter<String> itemAdapter;
-
-    ListView mainList;
-
     private SongsManager sm;
-
-    private String[] listContent;
     public static MediaPlayer mp;
     public static String title;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_decouvrir:
-                    mTextMessage.setText(R.string.title_decouvrir);
-                    return true;
-                case R.id.navigation_rechercher:
-                    mTextMessage.setText(R.string.title_rechercher);
-                    return true;
-                case R.id.navigation_playlists:
-                    mTextMessage.setText(R.string.title_playlists);
-                    return true;
-                case R.id.navigation_parametres:
-                    mTextMessage.setText(R.string.title_parametres);
-                    return true;
-            }
-            return false;
-        }
-    };
-
-    ListView mainList;
-    private String[] listContent;
-    public static MediaPlayer mp;
-    public static String title;
+    private int currentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
