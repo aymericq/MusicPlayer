@@ -7,7 +7,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -26,13 +25,13 @@ public class PlayListManagerActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.playlists_main);
+        setContentView(R.layout.playlists_fragment);
         setUpView();
 
     }
 
     private void setUpView() {
-        etInput = (EditText) findViewById(R.id.editText_input);
+        etInput = (EditText) findViewById(R.id.playlistName_input);
         btnAdd = (ImageButton) findViewById(R.id.btn_addPlaylist);
         lvItem = (ListView) findViewById(R.id.playlists_list);
 
@@ -49,7 +48,7 @@ public class PlayListManagerActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
                 title = lvItem.getItemAtPosition(position).toString();
-                Intent in = new Intent(getApplicationContext(), Songslist.class);
+                Intent in = new Intent(getApplicationContext(), DisplayPlaylistActivity.class);
                 startActivityForResult(in, 100);
             }
 

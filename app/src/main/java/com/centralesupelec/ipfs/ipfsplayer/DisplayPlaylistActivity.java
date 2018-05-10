@@ -1,6 +1,5 @@
 package com.centralesupelec.ipfs.ipfsplayer;
 
-import java.time.temporal.UnsupportedTemporalTypeException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,43 +12,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class Songslist extends Activity {
+public class DisplayPlaylistActivity extends Activity {
     /** Called when the activity is first created. */
-
-    private TextView name1;
-    private TextView name2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songsinpl);
 
-        ListView list = (ListView) findViewById(R.id.songs_pl);
-        list.setClickable(true);
+        ListView PlaylistList = (ListView) findViewById(R.id.songs_pl);
+        PlaylistList.setClickable(true);
 
-        final List<ItemSongPlaylist> ListOfItemSongs = new ArrayList<ItemSongPlaylist>();
-        ListOfItemSongs.add(new ItemSongPlaylist("Supélec est là", "Guillaume Debournoux", "SMS"));
-        ListOfItemSongs.add(new ItemSongPlaylist("Cloporte", "Damian Py", "Vrai Ingénieur"));
-        ListOfItemSongs.add(new ItemSongPlaylist("Go Top 1", "allez", "go top 1 srx"));
+        final List<SongDescriptor> SongList = new ArrayList<SongDescriptor>();
+        SongList.add(new SongDescriptor("Supélec est là", "Guillaume Debournoux", "SMS"));
+        SongList.add(new SongDescriptor("Cloporte", "Damian Py", "Vrai Ingénieur"));
+        SongList.add(new SongDescriptor("Go Top 1", "allez", "go top 1 srx"));
 
-        ItemSongPlaylistAdapter adapter = new ItemSongPlaylistAdapter(this, ListOfItemSongs);
+        SongDescriptorAdapter adapter = new SongDescriptorAdapter(this, SongList);
 
 
-        name1 = (TextView) findViewById(R.id.playlist_name);
-        name2 = (TextView) findViewById(R.id.playlist_name2);
+        TextView name1 = (TextView) findViewById(R.id.playlist_name);
+        TextView name2 = (TextView) findViewById(R.id.playlist_name2);
         name1.setText(getIntent().getStringExtra("playlistTitle").toUpperCase());
         name2.setText(getIntent().getStringExtra("playlistTitle").toUpperCase());
 
-        list.setOnItemClickListener(new OnItemClickListener() {
+        PlaylistList.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long index) {
-                System.out.println("sadsfsf");
-                showToast(ListOfItemSongs.get(position).getSongname());
+                showToast(SongList.get(position).getSongname());
             }
         });
 
-        list.setAdapter(adapter);
+        PlaylistList.setAdapter(adapter);
     }
 
     private void showToast(String message) {

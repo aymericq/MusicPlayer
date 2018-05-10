@@ -21,7 +21,7 @@ public class PlayListActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.playlists_main);
+        setContentView(R.layout.playlists_fragment);
 
         ArrayList<HashMap<String, String>> songsListData = new ArrayList<HashMap<String, String>>();
 
@@ -58,7 +58,7 @@ public class PlayListActivity extends ListActivity {
 
                 // Starting new intent
                 Intent in = new Intent(getApplicationContext(),
-                        AndroidBuildingMusicPlayerActivity.class);
+                        PlayerActivity.class);
                 // Sending songIndex to PlayerActivity
                 in.putExtra("songIndex", songIndex);
                 setResult(100, in);
