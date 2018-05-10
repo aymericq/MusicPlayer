@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ListView;
@@ -100,6 +101,10 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
         songsManager = new SongsManager();
         utils = new Utilities();
 
+        if(mp == null) {
+            mp = new MediaPlayer();
+        }
+
         // Listener
         songProgressBar.setOnSeekBarChangeListener(this);
         mp.setOnCompletionListener(this);
@@ -107,10 +112,6 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
         songsList = songsManager.getPlayList();
 
         metaRetriever = new MediaMetadataRetriever();
-
-        if(mp == null) {
-            mp = new MediaPlayer();
-        }
 
         playSong(getIntent().getIntExtra("songIndex", 0));
 
@@ -271,9 +272,16 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
         metaRetriever.setDataSource(songsList.get(songIndex).get("songPath"));
         try {
             byte[] art = metaRetriever.getEmbeddedPicture();
-            Bitmap songImage = BitmapFactory
-                    .decodeByteArray(art, 0, art.length);
-            coverImage.setImageBitmap(songImage);
+
+            if(art != null) {
+                Bitmap songImage = BitmapFactory.decodeByteArray(art, 0, art.length);
+                coverImage.setImageBitmap(songImage);
+            }
+            else
+            {
+                coverImage.setImageResource(R.drawable.adele); //any default cover resourse folder
+            }
+
             songTitleLabel.setText(metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE));
             /*album.setText(metaRetriver
                     .extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM));
@@ -281,6 +289,7 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
                     .extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST));
             genre.setText(metaRetriver
                     .extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE));*/
+
         } catch (Exception e) {
             coverImage.setBackgroundColor(Color.GRAY);
             songTitleLabel.setText(songsList.get(songIndex).get("songTitle"));
@@ -295,25 +304,25 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
     }
 
     private Runnable mUpdateTimeTask = new Runnable() {
-            public void run() {
-                if(mediaPlayerReady) {
-                    long totalDuration = mp.getDuration();
-                    long currentDuration = mp.getCurrentPosition();
+        public void run() {
+            if(mediaPlayerReady) {
+                long totalDuration = mp.getDuration();
+                long currentDuration = mp.getCurrentPosition();
 
-                    // Displaying Total Duration time
-                    songTotalDurationLabel.setText("" + utils.milliSecondsToTimer(totalDuration));
-                    // Displaying time completed playing
-                    songCurrentDurationLabel.setText("" + utils.milliSecondsToTimer(currentDuration));
+                // Displaying Total Duration time
+                songTotalDurationLabel.setText("" + utils.milliSecondsToTimer(totalDuration));
+                // Displaying time completed playing
+                songCurrentDurationLabel.setText("" + utils.milliSecondsToTimer(currentDuration));
 
-                    // Updating progress bar
-                    int progress = (int) (utils.getProgressPercentage(currentDuration, totalDuration));
-                    //Log.d("Progress", ""+progress);
-                    songProgressBar.setProgress(progress);
-                }
-                // Running this thread after 100 milliseconds
-                mHandler.postDelayed(this, 100);
+                // Updating progress bar
+                int progress = (int) (utils.getProgressPercentage(currentDuration, totalDuration));
+                //Log.d("Progress", ""+progress);
+                songProgressBar.setProgress(progress);
             }
-        };
+            // Running this thread after 100 milliseconds
+            mHandler.postDelayed(this, 100);
+        }
+    };
 
 
 
@@ -376,4 +385,3 @@ public class AndroidBuildingMusicPlayerActivity extends Activity implements OnCo
         mediaPlayerReady = false;
     }
 }
-
