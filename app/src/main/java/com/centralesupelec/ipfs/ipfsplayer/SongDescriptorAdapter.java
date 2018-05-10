@@ -14,9 +14,9 @@ import android.widget.TextView;
 public class ItemSongPlaylistAdapter extends BaseAdapter implements OnClickListener {
     private Context context;
 
-    private List<ItemSongPlaylist> listItemSongs;
+    private List<SongDescriptor> listItemSongs;
 
-    public ItemSongPlaylistAdapter(Context context, List<ItemSongPlaylist> listItemSongs) {
+    public ItemSongPlaylistAdapter(Context context, List<SongDescriptor> listItemSongs) {
         this.context = context;
         this.listItemSongs = listItemSongs;
     }
@@ -34,7 +34,7 @@ public class ItemSongPlaylistAdapter extends BaseAdapter implements OnClickListe
     }
 
     public View getView(int position, View convertView, ViewGroup viewGroup) {
-        ItemSongPlaylist entry = listItemSongs.get(position);
+        SongDescriptor entry = listItemSongs.get(position);
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -69,13 +69,13 @@ public class ItemSongPlaylistAdapter extends BaseAdapter implements OnClickListe
 
     @Override
     public void onClick(View view) {
-        ItemSongPlaylist entry = (ItemSongPlaylist) view.getTag();
+        SongDescriptor entry = (SongDescriptor) view.getTag();
         listItemSongs.remove(entry);
         notifyDataSetChanged();
 
     }
 
-    private void showDialog(ItemSongPlaylist entry) {
+    private void showDialog(SongDescriptor entry) {
         // Create and show your dialog
         // Depending on the Dialogs button clicks delete it or do nothing
     }

@@ -37,8 +37,8 @@ public class Songslist extends Activity {
 
         name1 = (TextView) findViewById(R.id.playlist_name);
         name2 = (TextView) findViewById(R.id.playlist_name2);
-        name1.setText(MainActivity.title2.toUpperCase());
-        name2.setText(MainActivity.title2.toUpperCase());
+        name1.setText(getIntent().getStringExtra("playlistTitle").toUpperCase());
+        name2.setText(getIntent().getStringExtra("playlistTitle").toUpperCase());
 
         list.setOnItemClickListener(new OnItemClickListener() {
 
